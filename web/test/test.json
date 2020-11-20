@@ -1,0 +1,31 @@
+[
+  {
+    "children": [
+      {
+        "children": [],
+        "id": "伯伯id",
+        "text": "伯伯"
+      },
+      {
+        "children": [
+          {
+            "children": [],
+            "id": "我ID",
+            "text": "我"
+          }
+          ,
+          {
+            "children": [],
+            "id": "弟ID",
+            "text": "弟弟"
+
+          }
+        ],
+        "id": "父id",
+        "text": "父"
+      }
+    ],
+    "id": "祖父id",
+    "text": "祖父"
+  }
+]

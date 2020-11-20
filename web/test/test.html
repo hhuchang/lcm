@@ -1,0 +1,157 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../js/locale/easyui-lang-zh_CN.js"></script>
+	<link rel="stylesheet" type="text/css" href="../js/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../js/themes/icon.css">
+	<script type="text/javascript">
+		//返回所有被选的id
+
+		function getChecked(){
+			var nodes=$('#devtype').tree('getChecked')
+			var s='';
+			for (var i = 0; i <nodes.length; i++) {
+				if (s!='') s+=',';
+				s+=nodes[i].id;
+			}
+			alert(s);
+			return s;
+		}
+		$(function(){
+			//console.log(5);
+			//alert(5);
+			$('#devtype').tree({
+				/*onLoadSuccess:function(){
+					checkedIsChecked();
+				}*/
+				onLoadSuccess:checkedIsChecked
+			});
+
+			
+			
+
+		});
+		function checkedIsChecked(){
+			//var checkedId=new Array(25,29);
+			$.ajax({
+				url:"test05.json",
+				dataType:"json",
+				success:function(data){
+					console.log("data："+data);
+					checkByid(data);
+
+
+				}
+			});
+		}
+		function checkByid(data){
+			for (var i = data.length - 1; i >= 0; i--) {
+				
+				var node=$('#devtype').tree('find',data[i]);
+			console.log("需要自动勾选："+node.id);
+			//alert("需要自动勾选："+node.id);
+			$('#devtype').tree("check",node.target);
+			}
+		}
+
+	</script>
+
+</head>
+<body >
+	
+							
+	<div align="center">
+		<div style="margin: 20px 0;">
+			<a href="#" class="easyui-linkbutton" onclick="getChecked()">显示勾选的信息</a>
+		</div>
+		
+		<div style="margin: 20px 0;">
+			<div class="easyui-panel" style="padding: 5px" width="800px">
+				<ul id="devtype" class="easyui-tree" 
+				data-options="
+						url:'test04.json',
+						method:'GET',
+						animate:true,
+						line:true,
+						checkbox:true,
+							
+							
+					"
+					></ul>
+				
+			</div>
+
+			
+		</div>
+	</div>
+    <div style="margin: 20px 0 10px 0;">
+	<div align="center">
+	<div id="ps" class="easyui-panel" title="Basic Panel" style="width:700px;height:220px;padding:10px;" >
+		<p style="font-size:14px">jQuery EasyUI framework helps you build your web pages easily.</p>
+		<ul>
+			<li>easyui is a collection of user-interface plugin based on jQuery.</li>
+			<li>easyui provides essential functionality for building modem, interactive, javascript applications.</li>
+			<li>using easyui you don't need to write many javascript code, you usually defines user-interface by writing some HTML markup.</li>
+			<li>complete framework for HTML5 web page.</li>
+			<li>easyui save your time and scales while developing your products.</li>
+			<li>easyui is very easy but powerful.</li>
+		</ul>
+	</div>
+	</div>
+	<div style="margin: 20px 0 10px 0;">
+	</div>
+	<div class="easyui-layout" style="width: 400px;height: 200px">
+		<div data-options="region:'west',split:true,collapsible:false" style="width: 150px;">
+		
+			<p style="padding: 5px;margin: 0;">请选择</p>
+			
+		</div>
+		<div id="con" region="center" title="zhuyao" style="padding: 5px"></div>
+		<div id="shuxing" region=""></div>
+		
+	</div>
+	<div align="center">
+		<input class="easyui-datetimebox" value="10/11/2017 12:12:23" style="width: 200px">
+		<div style="margin: 20px 0 20px 0;"></div>
+	</div>
+	<div align="center" style="margin-bottom:30px ">
+	<div class="easyui-calendar" style="width: 250px;height: 250px;"></div>
+	</div>
+	<div style="margin-bottom: 30px" align="center">
+		<input class="easyui-textbox"  data-options="buttonText:'搜索',buttonIcon:'icon-search',prompt:'输入搜索关键字...'" 
+		style="width: 300px;height: 32px;">
+		
+	</div>
+	<div align="center">
+		<div id="kk" class="easyui-panel" title="Fluid Panel" style="width: 600px;height: 200px;padding: 10px" data-options="iconCls:'icon-save',closable:true,tools:'#tt'"
+		>
+			
+		</div>
+		<div style="margin: 20px 0 10px 0;">
+			<div id="kk1" class="easyui-panel" title="Panel 1" style="width: 600px;height: 200px;padding: 10px" data-options="
+			tools:[{
+			iconCls:'icon-reload',
+			handler:function(){
+			$('#kk1').panel('refresh','http://www.jeasyui.com/forum/index.php');
+		}
+		}]
+
+			"
+		>
+			
+		</div>
+
+
+		
+	</div>
+	<div id="tt">
+		<a href="javascript:void(0)" class="icon-add" onclick="javascript:alert('add')"></a>
+		<a href="javascript:void(0)" class="icon-edit" onclick="javascript:alert('add')"></a>
+		<a href="javascript:void(0)" class="icon-cut" onclick="javascript:alert('add')"></a>
+		<a href="javascript:void(0)" class="icon-help" onclick="javascript:alert('add')"></a>
+		
+	</div>
+</body>
+</html>

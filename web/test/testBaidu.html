@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+		body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=GckIVWG1PUBgNHGqy2yhzIaFHa5M0lWG"></script>
+	
+	<title>获取覆盖物的信息</title>
+</head>
+<body>
+	<div id="">所有机型的列表</div>
+	<div id="allmap"></div>
+</body>
+</html>
+<script type="text/javascript">
+	window.onload=function(){
+		beginBaidu();
+	}
+
+	function beginBaidu() {
+		// 百度地图API功能
+	var map = new BMap.Map("allmap");
+	var point = new BMap.Point(118.8618318138,32.1535141180);
+	map.centerAndZoom(point, 12);
+	
+	var marker = new BMap.Marker(point);  // 创建标注
+        //marker.addEventListener("click",getAttr);
+		marker.addEventListener("click",showInfoWindow);
+
+	             // 将标注添加到地图中
+		map.addOverlay(marker);
+
+        var label=new BMap.Label("机型：55du6<br>手机号：159xxxxxxx",{offset:new BMap.Size(20,-10)});
+        marker.setLabel(label);
+        map.enableScrollWheelZoom();
+        map.enableContinuousZoom();
+        //创建一个对象
+        var opts={
+            width:200,
+            height:100,
+			title:"熊猫用户",
+			enableMessage:true,
+			message:""
+        };
+        var infoWindow=new BMap.InfoWindow("熊猫机型",opts);
+
+		var cityControlSize=new BMap.Size(10,20);
+        map.addControl(new BMap.CityListControl({
+            anchor:BMAP_ANCHOR_TOP_LEFT,
+			offset:cityControlSize,
+			/*onChangeBefore:function () {
+				console.info("before");
+            },
+            onChangeAfter:function () {
+                console.info("after");
+
+            },*/
+		}));
+
+
+//        实现只拉当前页面的数据
+		//获取当前屏幕的经纬度范围
+        map.addEventListener("moveend", getTerminalOfRange);
+        function getTerminalOfRange() {
+            var bs = map.getBounds();   //获取可视区域
+            var bssw = bs.getSouthWest();   //可视区域左下角
+            var bsne = bs.getNorthEast();   //可视区域右上角
+
+            var topLat = bsne.lat;
+            var bottomLat = bssw.lat;
+            var leftLng = bssw.lng;
+            var rightLng = bsne.lng;
+            console.info("（上）最高纬度："+topLat+"（下）最低纬度："+bottomLat+"左经度"+leftLng+"右经度"+rightLng);
+            //通过ajax只查询当前范围内的机型,
+        }
+
+
+
+
+        function getAttr(){
+            var p = marker.getPosition();       //获取marker的位置
+            alert("marker的位置是" + p.lng + "," + p.lat);
+        }
+        function showInfoWindow() {
+            map.openInfoWindow(infoWindow,point);
+        }
+
+    }
+	
+
+</script>
