@@ -1,0 +1,127 @@
+#screenshot{
+    width: 80%;
+
+    border-style: dashed;
+    border-width: 1px 1px 1px 1px;
+    border-color:#3399cc;
+
+}
+.imageDiv{
+    display: inline-block;
+    width: 160px;
+    height: 130px;
+    -webkit-box-sizing: border-box;/*chrome*/
+    -moz-box-sizing: border-box;/*firfox*/
+    box-sizing: border-box;/*IE*/
+    border: 1px dashed darkgray;
+    background: #f8f8f8;
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+.cover{
+    position: absolute;
+    z-index: 1;
+    top:0;
+    left:0;
+    width: 160px;
+    height: 130px;
+    background-color: rgba(0,0,0,.3);
+
+    display: none;
+    line-height:125px;
+    text-align: center;
+    cursor: pointer;
+}
+.cover .delBtn{
+    color: red;
+    font-size: 20px;
+
+
+}
+.imageDiv:hover .cover {
+    display: block;
+}
+.addImages{
+    display: inline-block;
+    width: 160px;
+    height: 130px;
+    -webkit-box-sizing: border-box;/*chrome*/
+    -moz-box-sizing: border-box;/*firfox*/
+    box-sizing: border-box;/*IE*/
+    border: 1px dashed darkgray;
+    background: #f8f8f8;
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+.text-detail{
+    margin-top: 40px;
+    text-align: center;
+}
+.text-detail span{
+    font-size: 40px;
+}
+.file{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 160px;
+    height: 130px;
+    opacity: 0;
+}
+#container{
+    width: 1300px;
+    margin: 0 auto;/*整个容器在浏览器居中*/
+}
+#header{
+    height: 80px;
+    border-bottom: 1px dashed #410;
+}
+#logo{
+    padding-left: 50px;
+    padding-top: 20px;
+    padding-bottom: 50px;
+
+}
+#content{
+    height: 600px;
+    margin-top: 20px;
+    width: 100%;
+    border-bottom: 1px dashed #410;
+}
+#content-left{
+    height: 100%;
+    width: 19%;
+    margin: 0 auto;
+    float: left;
+    border-right:1px dashed #410;
+
+}
+#content-center{
+    height: 100%;
+    width: 80%;
+    /*margin: 0 auto;*/
+    float: right;
+    /*background: #00ee00;*/
+}
+#linkbutton{
+    margin-top:1px ;
+
+}
+#footer{
+    height: 40px;
+    margin-top: 10px;
+}
+.clear{
+    clear: both;
+}
+footfont {font-family: "楷体", serif;font-size:large}
+.logofont {font-family: "楷体", sans-serif;font-size:x-large}
+#headerpanel{
+    float: right;
+}
+
+#progressbar{
+
+}
