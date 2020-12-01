@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试页</title>
+
+</head>
+<body>
+	<h1 align="center">Beer Selection Page</h1>
+	<form method="POST" action="SelectBeer.do">
+		选择啤酒<p>
+			颜色：
+			<select name="color" size="1">
+				<option value="light">light</option>
+				<option value="amber">amber</option>
+				<option value="brown">brown</option>
+				<option value="dark">dark</option>
+			</select>
+			<br><br>
+			<center>
+				<input type="submit">
+			</center>
+	</form>
+	<form method="POST" action="testJsp.jsp">
+
+		<br><br>
+		name：<input type="text" name="userName">
+		id:<input type="text" name="userId">
+		<center>
+			<input type="submit" >
+		</center>
+	</form>
+<br>新的表单提交
+	<form method="POST" action="testJsp.jsp">
+
+		<br><br>
+		name：<input type="text" name="name">
+		id:<input type="text" name="id">
+		<!--id只能为数字，需要使用js校验域，否则会出错-->
+		<center>
+			<input type="submit" >
+		</center>
+	</form>
+
+
+</body>
+</html>
