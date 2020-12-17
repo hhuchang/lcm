@@ -3,3 +3,4 @@
 3,这里设计app上传，app分类，app的适配，渠道分发，版本控制，自身升级。 <br/>
 4,针对windows，linux  上传app时，自动解析android  <br/>
 5,本项目为appstore 的server端，敬请期待android端。 <br/>
+6，架构采用分层
