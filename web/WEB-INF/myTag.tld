@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+
+    <description>changcan 's sjtl</description>
+    <display-name>cc core</display-name>
+    <tlib-version>1.1</tlib-version>
+    <short-name>myTag</short-name>
+    <uri>mySimpleTags</uri>
+    <tag>
+        <name>my</name>
+        <tag-class>com.test.Tag.SimpleTagTest01</tag-class>
+        <body-content>empty</body-content>
+    </tag>
+    <tag>
+        <name>tag2</name>
+        <tag-class>com.test.Tag.SimpleTag02</tag-class>
+        <body-content>scriptless</body-content>
+    </tag>
+
+
+
+
+
+</taglib>
