@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <!-- 自动更新 -->
+    <constant name="struts.configuration.xml.reload" value="true"/>
+    <!--允许访问静态成员-->
+    <constant name="struts.ognl.allowStaticMethodAccess" value="true"/>
+    <!--开启动态访问-->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+    <!--action对象交给spring框架管理-->
+    <constant name="struts.objectFactory" value="spring"/>
+    <!--上传大小限制,必须配置  如果不配置的话  .,默认为2097152-->
+    <constant name="struts.multipart.maxSize" value="10737418240" />
+    <constant name="struts.multipart.parser" value="uploadprogress"/>
+
+    <!-- 配置action -->
+    <package name="Appstoremain-package" namespace="/" extends="struts-default">
+        <!--配置拦截器-->
+        <interceptors>
+            <interceptor name="loginInterceptor" class="com.interceptor.LogonInterceptor"/>
+            <interceptor name="tokenSession" class="com.interceptor.TokenSessionInter"/>
+        </interceptors>
+
+        <!--允许动态访问的方法规则，只允许add和sal方法 regex:.* 为解除全部方法请求的限制-->
+        <global-allowed-methods>regex:.*</global-allowed-methods>
+        <!--action对象交给spring创建，class写spring里创建的action的id-->
+        <action name="*_*" class="{1}" method="{2}">
+            <!--<result>/content/msg.jsp</result>-->
+
+
+
+            <result name="success">/WEB-INF/jsp/{1}/{2}.jsp</result>
+
+            <result name="app_success">/WEB-INF/jsp/app/{2}.jsp</result>
+            <result name="apptype_list">/WEB-INF/jsp/apptype/getAppTypes.jsp</result>
+            <result name="login_success">/WEB-INF/jsp/admin/main.jsp</result>
+            <result name="login_failed">/WEB-INF/jsp/login.jsp</result>
+            <result name="upload_complete">/WEB-INF/jsp/app/newApp.jsp</result>
+            <result name="app_list">/WEB-INF/jsp/app/getAppPageBean.jsp</result>
+            <result name="devtype_list">/WEB-INF/jsp/devtype/getAllDevtype.jsp</result>
+            <result name="user_list">/WEB-INF/jsp/user/getAllUser.jsp</result>
+            <result name="admin_list">/WEB-INF/jsp/admin/getAllAdmin.jsp</result>
+            <result name="t_list">/WEB-INF/jsp/terminal/terminalList.jsp</result>
+            <result name="invalid.token">#</result>
+
+
+            <!--配置拦截器-->
+            <!--系统默认的拦截器-->
+            <interceptor-ref name="defaultStack"/>
+
+            <!--避免表单重复提交-->
+            <!--<interceptor-ref name="tokenSession"/>-->
+
+            <!--登陆拦截器-->
+            <interceptor-ref name="loginInterceptor"/>
+
+
+
+
+
+        </action>
+
+        <!--<global-results>
+            <result name="applist" >/content/app/list.jsp</result>
+        </global-results>-->
+
+
+        <!--错误页-->
+        <!--<global-results>
+            <result name="errorPage" type="freemarker">/WEB-INF/views/back/common/error.ftl</result>
+        </global-results>-->
+        <!--<global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="errorPage"></exception-mapping>
+        </global-exception-mappings>-->
+    </package>
+    <bean type="org.apache.struts2.dispatcher.multipart.MultiPartRequest"
+          name="uploadprogress"
+          class="com.upload.MyJakartaMultiPartRequest"
+          scope="prototype"/>
+
+</struts>

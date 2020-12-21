@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--配置自动扫描的包，完成bean的创建和自动依赖注入-->
+    <context:component-scan base-package="com.*"/>
+    <!--Spring的JDBC框架连接并操作数据库，必须导入spring-jdbc-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <bean id="dataSource"  class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${driverClass}"/>
+        <property name="jdbcUrl" value="${jdbcUrl}"/>
+        <property name="user" value="${user}"/>
+        <property name="password" value="${password}"/>
+        <property name="idleConnectionTestPeriod" value="1800"/>
+    </bean>
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+        <property name="mappingLocations" value="classpath*:/com/entity/*.hbm.xml"/>
+        <!--hibernate注解扫描-->
+        <property name="packagesToScan">
+            <list><value>com.entity</value></list>
+        </property>
+    </bean>
+    <!--配置事务-->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <!--beans-->
+    <!--====================================================================-->
+    <bean id="userDao" class="com.dao.UserDao">
+        <property name="hibernateTemplate" ref="hibernateTemplate"/>
+    </bean>
+    <bean id="userService" class="com.service.UserService">
+        <property name="userDao" ref="userDao"/>
+    </bean>
+    <bean id="userAction" class="com.action.UserAction" scope="prototype">
+        <property name="userService" ref="userService"/>
+    </bean>
+    <!--================================-->
+    <bean id="appDao" class="com.dao.AppDao">
+        <property name="hibernateTemplate" ref="hibernateTemplate"/>
+    </bean>
+    <bean id="appService" class="com.service.AppService">
+        <property name="appDao" ref="appDao"/>
+    </bean>
+    <bean id="appAction" class="com.action.AppAction" scope="prototype">
+        <property name="appService" ref="appService"/>
+    </bean>
+    <bean id="strUpload" class="com.upload.Struts2.StrUpload" scope="prototype">
+
+    </bean>
+    <bean id="uploadPa" class="com.upload.Struts2.UploadPa" scope="prototype"/>
+    <bean id="getUploadStateAction" class="com.upload.GetUploadStateAction" scope="prototype"/>
+
+    <!--AppType==========-->
+    <bean id="appTypeDao" class="com.dao.AppTypeDao">
+        <property name="hibernateTemplate" ref="hibernateTemplate"/>
+    </bean>
+    <bean id="appTypeService" class="com.service.AppTypeService">
+        <property name="appTypeDao" ref="appTypeDao"/>
+    </bean>
+    <bean id="appTypeAction" class="com.action.AppTypeAction">
+        <property name="appTypeService" ref="appTypeService"/>
+    </bean>
+
+
+
+
+    <!--<bean id="employeeService" class="com.service.EmployeeService">-->
+        <!--<property name="employeeDao" value="com.dao.EmployeeDao"/>-->
+        <!--<property name="managerDao" value="com.dao.ManagerDao"/>-->
+    <!--</bean>-->
+    <!--<bean id="loginAction" class="com.action.LoginAction">-->
+        <!--<property name="employeeService" ref="employeeService"/>-->
+    <!--</bean>-->
+    <bean id="DaoHibernate" class="com.page.PageHibernateDaoSupport">
+        <property name="hibernateTemplate" ref="hibernateTemplate"/>
+    </bean>
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+    <!--配置增强-->
+    <aop:config>
+        <aop:pointcut id="serviceMethod" expression="execution(* com.service.*Service.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethod"/>
+
+    </aop:config>
+    <!--定义Autowired自动注入bean-->
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+
+
+</beans>
