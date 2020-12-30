@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--配置自动扫描的包，完成bean的创建和自动依赖注入-->
+    <context:component-scan base-package="com.test.bom"/>
+    <!--Spring的JDBC框架连接并操作数据库，必须导入spring-jdbc-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <bean id="dataSource"  class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <!--<property name="driverClass" value="${driverClass}"/>-->
+        <!--<property name="jdbcUrl" value="${jdbcUrl}"/>-->
+        <!--<property name="user" value="${user}"/>-->
+        <!--<property name="password" value="${password}"/>-->
+        <property name="driverClass" value="net.sourceforge.jtds.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:jtds:sqlserver://192.168.107.34:1433;DatabaseName=yfzx"/>
+        <property name="user" value="sa"/>
+        <property name="password" value=""/>
+        <property name="idleConnectionTestPeriod" value="1800"/>
+    </bean>
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:hibernate.sql2000.cfg.xml"/>
+
+        <!--hibernate注解扫描-->
+        <property name="packagesToScan">
+            <list><value>com.test.bom</value></list>
+        </property>
+    </bean>
+    <!--配置事务-->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <!--beans-->
+    <!--====================================================================-->
+
+
+
+
+
+    <!--<bean id="employeeService" class="com.service.EmployeeService">-->
+        <!--<property name="employeeDao" value="com.dao.EmployeeDao"/>-->
+        <!--<property name="managerDao" value="com.dao.ManagerDao"/>-->
+    <!--</bean>-->
+    <!--<bean id="loginAction" class="com.action.LoginAction">-->
+        <!--<property name="employeeService" ref="employeeService"/>-->
+    <!--</bean>-->
+
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+    <!--配置增强-->
+    <aop:config>
+        <aop:pointcut id="serviceMethod" expression="execution(* com.service.*Service.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethod"/>
+
+    </aop:config>
+    <!--定义Autowired自动注入bean-->
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+
+
+</beans>

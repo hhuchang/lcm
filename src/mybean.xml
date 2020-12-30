@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans>
+    <bean id="computer" class="com.test.Computer">
+        <property name="name" value="毛泽东"/>
+        <property name="out" ref="betterPrinter"/>
+    </bean>
+    <bean id="betterPrinter" class="com.test.BetterPrint"/>
+    <bean id="now" class="java.util.Date" scope="prototype"/>
+</beans>
